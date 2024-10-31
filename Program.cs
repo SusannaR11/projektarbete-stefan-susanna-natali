@@ -25,7 +25,7 @@
             // UserHandler.RemoveUser(user);
             // UserHandler.PrintUser(UserHandler.userList);
             // List<User>userList = new ();
-             List<Report> saleslist =  new List<Report>(); 
+            List<Report> SalesList =  new List<Report>(); 
             ReportHandler.SalesList = new List<Report>();
             // List<Table> tablelist = new();
             //ProductHandler.productList.Add(product);
@@ -58,34 +58,28 @@
                     Console.WriteLine("Tryck 4. För att avsluta: ");
                     string? reportChoice = Console.ReadLine();
 
+                    DateTime startDate, endDate;
+                    if (Report.GetDate("Inputta startdatum för den rapport du vill ha (YYYY-MM-DD):", out startDate) || //TODO justera för vald rapport från user-input
+                        Report.GetDate("Inputta slutdatum för den rapport du vill ha (YYYY-MM-DD): ", out endDate))
+                    {
+                        Console.WriteLine("Ogiltig input. Försök igen (YYYY-MM-DD).");
+                        return;
+                    }
+
                     switch (reportChoice)
                     {
                         case "1":
-                            Console.WriteLine("Var god inputta start-datum (YYYY-MM-DD): "); //TODO saknar fel-hantering för fel user-input av datum
-                            string startDateInput = Console.ReadLine();
-                            DateTime startDate;
-                                if (DateTime.TryParse(startDateInput, out startDate))
-                                {
-                                Console.WriteLine("Var god inputta slut-datum (YYYY-MM-DD): ");
-                                string endDateInput = Console.ReadLine();
-                                DateTime endDate;
-                                    if (DateTime.TryParse(endDateInput, out endDate))
-                                    {
-                                    Console.WriteLine("Genererar 'TotalSales' rapport: ");
-                                    decimal TotalSales = ReportHandler.ReportGenerator(Report.ReportCategory.TotalSales, startDate, endDate);
-                                    Console.WriteLine($"Total Sales: {TotalSales}");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Ogiltig input. Försök igen.");
-                                    }
-                                }
-                                else
-                                {
-                                     Console.WriteLine("Ogiltig input. Försök igen.");
-                                } 
-                                break;
-                                
+                            decimal TotalSales = ReportHandler.ReportGenerator(Report.ReportCategory.TotalSales, startDate, endDate);
+                            Console.WriteLine($"Total försäljning är: {TotalSales}");
+                            break;
+                        case "2":
+                            decimal WeeklySales = ReportHandler.ReportGenerator(Report.ReportCategory.WeeklySales, startDate, endDate);
+                            Console.WriteLine($"Total försäljning är: {WeeklySales}");
+                            break;
+                        case "3":
+                            decimal DailySales = ReportHandler.ReportGenerator(Report.ReportCategory.DailySales, startDate, endDate);
+                            Console.WriteLine($"Total försäljning är: {DailySales}");
+                            break;
                         default:
                             Console.WriteLine("Ogiltigt val, försök igen: ");
                             break;
